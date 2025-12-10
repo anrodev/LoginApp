@@ -28,7 +28,7 @@ export default function RegisterStep2Screen({ navigation }: Props) {
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
     >
       <ScreenContainer>
-        {/* Tabs superiores */}
+        {/* Upper tabs */}
         <View style={styles.tabsRow}>
           <TouchableOpacity style={styles.tabInactive}>
             <Text style={styles.tabInactiveText}>Datos</Text>
@@ -39,7 +39,7 @@ export default function RegisterStep2Screen({ navigation }: Props) {
           </TouchableOpacity>
         </View>
 
-        {/* Mensaje */}
+        {/* Message */}
         <Text style={styles.infoText}>
           Su contraseña debe tener un mínimo de 8 caracteres
         </Text>
@@ -81,7 +81,7 @@ export default function RegisterStep2Screen({ navigation }: Props) {
           </Text>
         </View>
 
-        {/* Botón Guardar */}
+        {/* Save button */}
         <TouchableOpacity
           style={styles.saveButton}
           onPress={() => null}

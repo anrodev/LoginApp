@@ -19,7 +19,7 @@ export function HomeHeaderTitle() {
       {/* Avatar */}
       <Image source={{ uri: Avatar }} style={styles.avatar} />
 
-      {/* Bubble con nombre */}
+      {/* Bubble with name */}
       <View style={styles.nameBubble}>
         <Text style={styles.nameText}>Gabriel</Text>
       </View>
@@ -51,7 +51,7 @@ export function HomeHeaderRight() {
 const styles = StyleSheet.create({
   titleWrapper: {
     flexDirection: 'row',
-    alignItems: 'center',   // <-- Esto hace que se alinee perfecto con el input
+    alignItems: 'center',
   },
 
   avatar: {

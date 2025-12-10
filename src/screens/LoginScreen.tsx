@@ -29,11 +29,11 @@ export default function LoginScreen({ navigation }: Props) {
 
         <Logo/>
 
-        {/* Título */}
+        {/* Title */}
         <Text style={styles.title}>Iniciemos</Text>
         <Text style={styles.subtitle}>Inicia sesión o crea una cuenta.</Text>
 
-        {/* Input correo */}
+        {/* Mail input */}
         <Text style={styles.label}>CORREO</Text>
         <TextInput
           placeholder="Escribe tu correo"
@@ -41,7 +41,7 @@ export default function LoginScreen({ navigation }: Props) {
           keyboardType="email-address"
         />
 
-        {/* Input contraseña */}
+        {/* Enter password */}
         <Text style={styles.label}>CONTRASEÑA</Text>
         <View style={styles.passwordContainer}>
           <TextInput
@@ -61,7 +61,7 @@ export default function LoginScreen({ navigation }: Props) {
           </TouchableOpacity>
         </View>
 
-        {/* Botón iniciar */}
+        {/* Start button */}
         <TouchableOpacity
           style={styles.loginButton}
           onPress={() => navigation.navigate('Panel')}
@@ -69,12 +69,12 @@ export default function LoginScreen({ navigation }: Props) {
           <Text style={styles.loginButtonText}>INICIAR SESIÓN</Text>
         </TouchableOpacity>
 
-        {/* Olvidé contraseña */}
+        {/* Forgot password */}
         <TouchableOpacity>
           <Text style={styles.forgotText}>Olvidé contraseña</Text>
         </TouchableOpacity>
 
-        {/* Botón registrarme */}
+        {/* Register button */}
         <TouchableOpacity
           style={styles.registerButton}
           onPress={() => navigation.navigate('Register')}

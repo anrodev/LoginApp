@@ -25,14 +25,14 @@ export default function RegisterOptionsScreen({ navigation }: Props) {
       <ScreenContainer>
         {/* LOGO */}
         <Logo/>
-        {/* Título */}
+        {/* Títle */}
         <Text style={styles.title}>Iniciemos</Text>
         <Text style={styles.subtitle}>Inicia sesión o crea una cuenta.</Text>
 
-        {/* Subtítulo */}
+        {/* Subtitle */}
         <Text style={styles.optionTitle}>Elije como deseas registrarte</Text>
 
-        {/* Botón Usuario */}
+        {/* User Button */}
         <TouchableOpacity
           style={styles.optionButton}
           onPress={() =>
@@ -48,7 +48,7 @@ export default function RegisterOptionsScreen({ navigation }: Props) {
           </View>
         </TouchableOpacity>
 
-        {/* Botón Afiliado */}
+        {/* Affiliate Button */}
         <TouchableOpacity
           style={styles.optionButton}
           onPress={() =>
@@ -64,7 +64,7 @@ export default function RegisterOptionsScreen({ navigation }: Props) {
           </View>
         </TouchableOpacity>
 
-        {/* Botón Vendedor/Agente */}
+        {/* Seller/Agent Button */}
         <TouchableOpacity
           style={styles.optionButton}
           onPress={() =>

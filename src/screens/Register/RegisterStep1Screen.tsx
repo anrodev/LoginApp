@@ -70,7 +70,7 @@ export default function RegisterStep1Screen({ navigation }: Props) {
           />
         </View>
 
-        {/* Subir documento */}
+        {/* Upload document */}
         <TouchableOpacity style={styles.uploadButton}>
           <Icon name="cloud-upload-outline" size={20} color="#555" />
           <Text style={styles.uploadText}>Subir documento</Text>
@@ -88,7 +88,7 @@ export default function RegisterStep1Screen({ navigation }: Props) {
           keyboardType="email-address"
         />
 
-        {/* Botón Siguiente */}
+        {/* Next button */}
         <TouchableOpacity
           style={styles.nextButton}
           onPress={() => navigation.navigate('RegisterStep2')}
@@ -163,13 +163,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5F5F5',
     borderRadius: 10,
     marginBottom: 20,
-    overflow: 'hidden',   // 🔥 evita padding extraño del picker
+    overflow: 'hidden',
   },
 
   picker: {
     height: 50,
-    marginTop: Platform.OS === 'android' ? -4 : 0, // 🔥 alinea vertical
-    paddingTop: Platform.OS === 'android' ? 6 : 2, // 🔥 baja el texto
+    marginTop: Platform.OS === 'android' ? -4 : 0, 
+    paddingTop: Platform.OS === 'android' ? 6 : 2,
     paddingLeft: 10,
   },
 
