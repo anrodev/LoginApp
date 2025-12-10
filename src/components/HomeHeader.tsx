@@ -2,12 +2,8 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
-import { CommonActions } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/types';
-
-const navigation =
-  useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
 const Avatar = 'https://randomuser.me/api/portraits/men/75.jpg';
 
@@ -15,7 +11,6 @@ const Avatar = 'https://randomuser.me/api/portraits/men/75.jpg';
 export function HomeHeaderTitle() {
   return (
     <View style={styles.titleWrapper}>
-      
       {/* Avatar */}
       <Image source={{ uri: Avatar }} style={styles.avatar} />
 
@@ -23,23 +18,22 @@ export function HomeHeaderTitle() {
       <View style={styles.nameBubble}>
         <Text style={styles.nameText}>Gabriel</Text>
       </View>
-
     </View>
   );
 }
 
 // ---------- HEADER RIGHT ----------
 export function HomeHeaderRight() {
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   return (
     <TouchableOpacity
       style={styles.shareBubble}
       onPress={() =>
-        navigation.getParent()?.dispatch(
-          CommonActions.reset({
-            index: 0,
-            routes: [{ name: 'Login' }],
-          }),
-        )
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'Login' }],
+        })
       }
     >
       <Icon name="log-out-outline" size={30} color="black" />

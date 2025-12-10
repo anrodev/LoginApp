@@ -23,7 +23,11 @@ const LoginFormSchema = z.object({
 
 type LoginFormType = z.infer<typeof LoginFormSchema>;
 
-export default function LoginForm() {
+type LoginFormProps = {
+  navigation: any;
+};
+
+export default function LoginForm({ navigation }: LoginFormProps) {
   const { showLoader, hideLoader } = useLoader();
 
   const {
@@ -55,6 +59,9 @@ export default function LoginForm() {
         text1: 'Login exitoso 🎉',
         text2: 'Bienvenido de nuevo',
       });
+
+      navigation.navigate('Panel');
+
     }, 3000);
   };
 

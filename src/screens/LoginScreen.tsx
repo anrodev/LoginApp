@@ -30,7 +30,7 @@ export default function LoginScreen({ navigation }: Props) {
 
         {/* login form */}
 
-        <LoginForm/>
+        <LoginForm navigation={navigation}/>
 
         {/* Forgot password */}
         <TouchableOpacity>
