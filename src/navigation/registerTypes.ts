@@ -1,6 +1,6 @@
 export type RegisterStackParamList = {
   RegisterOptions: undefined;
-  RegisterStep1: { option: string };
+  RegisterStep1: undefined;
   RegisterStep2: undefined;
 };
 

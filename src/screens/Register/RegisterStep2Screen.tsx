@@ -13,14 +13,46 @@ import { RegisterStackParamList } from '../../navigation/registerTypes';
 import ScreenContainer from '../../components/ScreenContainer';
 import Icon from 'react-native-vector-icons/Ionicons';
 import TermsModal from '../../components/TermsModal';
+import { useFormContext } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
+import { useLoader } from '../../context/LoaderContext';
+import Toast from 'react-native-toast-message';
+import { RegisterFormType } from '../../context/RegisterFormContext';
 
 type Props = NativeStackScreenProps<RegisterStackParamList, 'RegisterStep2'>;
 
 export default function RegisterStep2Screen({ navigation }: Props) {
+  const { showLoader, hideLoader } = useLoader();
+
+  const {
+    control,
+    trigger,
+    reset,
+    handleSubmit,
+    formState: { errors },
+  } = useFormContext<RegisterFormType>();
+
   const [showTermsModal, setShowTermsModal] = useState(false);
-  const [password, setPassword] = useState('');
-  const [confirm, setConfirm] = useState('');
   const [accepted, setAccepted] = useState(false);
+
+  const onSubmit = async (data: RegisterFormType) => {
+    const isValid = await trigger();
+    if (!isValid || !accepted) return;
+    showLoader();
+
+    console.log(data);
+
+    setTimeout(() => {
+      hideLoader();
+      reset();
+
+      Toast.show({
+        type: 'success',
+        text1: 'Login exitoso 🎉',
+        text2: 'Bienvenido de nuevo',
+      });
+    }, 3000);
+  };
 
   return (
     <KeyboardAvoidingView
@@ -45,21 +77,45 @@ export default function RegisterStep2Screen({ navigation }: Props) {
         </Text>
 
         {/* Inputs */}
-        <TextInput
-          placeholder="Contraseña"
-          style={styles.input}
-          secureTextEntry
-          value={password}
-          onChangeText={setPassword}
+        <Controller
+          control={control}
+          name="password"
+          render={({ field: { onChange, value } }) => (
+            <TextInput
+              placeholder="Contraseña"
+              style={styles.input}
+              secureTextEntry
+              value={value}
+              onChangeText={onChange}
+            />
+          )}
         />
 
-        <TextInput
-          placeholder="Repetir contraseña"
-          style={styles.input}
-          secureTextEntry
-          value={confirm}
-          onChangeText={setConfirm}
+        {errors.password && (
+          <Text style={styles.errorText}>
+            {String(errors.password?.message)}
+          </Text>
+        )}
+
+        <Controller
+          control={control}
+          name="confirmPassword"
+          render={({ field: { onChange, value } }) => (
+            <TextInput
+              placeholder="Repetir contraseña"
+              style={styles.input}
+              secureTextEntry
+              value={value}
+              onChangeText={onChange}
+            />
+          )}
         />
+
+        {errors.confirmPassword && (
+          <Text style={styles.errorText}>
+            {String(errors.confirmPassword?.message)}
+          </Text>
+        )}
 
         {/* Checkbox */}
         <View style={styles.checkboxRow}>
@@ -82,10 +138,7 @@ export default function RegisterStep2Screen({ navigation }: Props) {
         </View>
 
         {/* Save button */}
-        <TouchableOpacity
-          style={styles.saveButton}
-          onPress={() => null}
-        >
+        <TouchableOpacity style={styles.saveButton} onPress={handleSubmit(onSubmit)}>
           <Text style={styles.saveText}>GUARDAR</Text>
         </TouchableOpacity>
       </ScreenContainer>
@@ -160,5 +213,8 @@ const styles = StyleSheet.create({
   linkText: {
     color: '#758640',
     textDecorationLine: 'underline',
+  },
+  errorText: {
+    color: '#dd4343ff',
   },
 });

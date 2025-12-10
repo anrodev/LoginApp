@@ -5,18 +5,25 @@ import {
   TouchableOpacity,
   StyleSheet,
   KeyboardAvoidingView,
-  Platform
+  Platform,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RegisterStackParamList } from '../../navigation/registerTypes';
 import ScreenContainer from '../../components/ScreenContainer';
+import { useFormContext } from "react-hook-form";
 import Logo from '../../components/Logo';
-
 
 type Props = NativeStackScreenProps<RegisterStackParamList, 'RegisterOptions'>;
 
 export default function RegisterOptionsScreen({ navigation }: Props) {
+  const { setValue } = useFormContext();
+
+  const handleSelect = (type: 'user' | 'affiliate' | 'seller') => {
+    setValue('registerType', type);
+    navigation.navigate('RegisterStep1');
+  };
+
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
@@ -24,7 +31,7 @@ export default function RegisterOptionsScreen({ navigation }: Props) {
     >
       <ScreenContainer>
         {/* LOGO */}
-        <Logo/>
+        <Logo />
         {/* Títle */}
         <Text style={styles.title}>Iniciemos</Text>
         <Text style={styles.subtitle}>Inicia sesión o crea una cuenta.</Text>
@@ -35,9 +42,7 @@ export default function RegisterOptionsScreen({ navigation }: Props) {
         {/* User Button */}
         <TouchableOpacity
           style={styles.optionButton}
-          onPress={() =>
-            navigation.navigate('RegisterStep1', { option: 'user' })
-          }
+          onPress={() => handleSelect('user')}
         >
           <View style={styles.optionRow}>
             <View style={styles.optionIcon}>
@@ -51,9 +56,7 @@ export default function RegisterOptionsScreen({ navigation }: Props) {
         {/* Affiliate Button */}
         <TouchableOpacity
           style={styles.optionButton}
-          onPress={() =>
-            navigation.navigate('RegisterStep1', { option: 'Affiliate' })
-          }
+          onPress={() => handleSelect('affiliate')}
         >
           <View style={styles.optionRow}>
             <View style={styles.optionIcon}>
@@ -67,9 +70,7 @@ export default function RegisterOptionsScreen({ navigation }: Props) {
         {/* Seller/Agent Button */}
         <TouchableOpacity
           style={styles.optionButton}
-          onPress={() =>
-            navigation.navigate('RegisterStep1', { option: 'seller' })
-          }
+          onPress={() => handleSelect('seller')}
         >
           <View style={styles.optionRow}>
             <View style={styles.optionIcon}>

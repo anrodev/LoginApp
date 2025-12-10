@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import {
   Text,
   StyleSheet,
@@ -13,11 +12,28 @@ import { RegisterStackParamList } from '../../navigation/registerTypes';
 import ScreenContainer from '../../components/ScreenContainer';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Picker } from '@react-native-picker/picker';
+import { useFormContext } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
 
 type Props = NativeStackScreenProps<RegisterStackParamList, 'RegisterStep1'>;
 
 export default function RegisterStep1Screen({ navigation }: Props) {
-  const [docType, setDocType] = useState('V');
+  const {
+    control,
+    trigger,
+    formState: { errors },
+  } = useFormContext();
+
+  const goNext = async () => {
+    const isValid = await trigger(
+      ['names', 'surnames', 'docType', 'docNumber', 'phone', 'email'],
+      { shouldFocus: true },
+    );
+
+    if (!isValid) return;
+
+    navigation.navigate('RegisterStep2');
+  };
 
   return (
     <KeyboardAvoidingView
@@ -36,7 +52,7 @@ export default function RegisterStep1Screen({ navigation }: Props) {
           </TouchableOpacity>
         </View>
 
-        {/* Foto perfil */}
+        {/* Photo profile */}
         <View style={styles.profileWrapper}>
           <View style={styles.profileCircle}>
             <Icon name="person-circle-outline" size={100} color="#bbb" />
@@ -44,31 +60,80 @@ export default function RegisterStep1Screen({ navigation }: Props) {
         </View>
 
         {/* Inputs */}
-        <TextInput placeholder="Nombres" style={styles.input} />
+        <Controller
+          control={control}
+          name="names"
+          render={({ field: { onChange, value } }) => (
+            <TextInput
+              placeholder="Nombres"
+              style={styles.input}
+              value={value}
+              onChangeText={onChange}
+            />
+          )}
+        />
 
-        <TextInput placeholder="Apellidos" style={styles.input} />
+        <Text style={styles.errorText}>
+          {errors.names?.message?.toString()}
+        </Text>
 
-        {/* Selector + input */}
+        <Controller
+          control={control}
+          name="surnames"
+          render={({ field: { onChange, value } }) => (
+            <TextInput
+              placeholder="Apellidos"
+              style={styles.input}
+              value={value}
+              onChangeText={onChange}
+            />
+          )}
+        />
+
+        <Text style={styles.errorText}>
+          {errors.surnames?.message?.toString()}
+        </Text>
+
+        {/* Selector */}
         <View style={styles.row}>
-          <View style={styles.pickerWrapper}>
-            <Picker
-              selectedValue={docType}
-              dropdownIconColor="#777"
-              style={styles.picker}
-              onValueChange={v => setDocType(v)}
-            >
-              <Picker.Item label="V" value="V" />
-              <Picker.Item label="E" value="E" />
-              <Picker.Item label="J" value="J" />
-              <Picker.Item label="P" value="P" />
-              <Picker.Item label="G" value="G" />
-            </Picker>
-          </View>
-          <TextInput
-            placeholder="Escribir"
-            style={[styles.input, { flex: 1, marginLeft: 10 }]}
+          <Controller
+            control={control}
+            name="docType"
+            render={({ field: { value, onChange } }) => (
+              <View style={styles.pickerWrapper}>
+                <Picker
+                  selectedValue={value}
+                  dropdownIconColor="#777"
+                  style={styles.picker}
+                  onValueChange={onChange}
+                >
+                  <Picker.Item label="V" value="V" />
+                  <Picker.Item label="E" value="E" />
+                  <Picker.Item label="J" value="J" />
+                  <Picker.Item label="P" value="P" />
+                  <Picker.Item label="G" value="G" />
+                </Picker>
+              </View>
+            )}
+          />
+
+          <Controller
+            control={control}
+            name="docNumber"
+            render={({ field: { onChange, value } }) => (
+              <TextInput
+                placeholder="Escribir"
+                style={[styles.input, { flex: 1, marginLeft: 10 }]}
+                value={value}
+                onChangeText={onChange}
+              />
+            )}
           />
         </View>
+
+        <Text style={styles.errorText}>
+          {errors.docNumber?.message?.toString()}
+        </Text>
 
         {/* Upload document */}
         <TouchableOpacity style={styles.uploadButton}>
@@ -76,23 +141,45 @@ export default function RegisterStep1Screen({ navigation }: Props) {
           <Text style={styles.uploadText}>Subir documento</Text>
         </TouchableOpacity>
 
-        <TextInput
-          placeholder="Teléfono"
-          style={styles.input}
-          keyboardType="phone-pad"
+        <Controller
+          control={control}
+          name="phone"
+          render={({ field: { onChange, value } }) => (
+            <TextInput
+              placeholder="Teléfono"
+              style={styles.input}
+              keyboardType="phone-pad"
+              value={value}
+              onChangeText={onChange}
+            />
+          )}
         />
 
-        <TextInput
-          placeholder="Correo"
-          style={styles.input}
-          keyboardType="email-address"
+        <Text style={styles.errorText}>
+          {errors.phone?.message?.toString()}
+        </Text>
+
+        <Controller
+          control={control}
+          name="email"
+          render={({ field: { onChange, value } }) => (
+            <TextInput
+              placeholder="Correo"
+              style={styles.input}
+              keyboardType="email-address"
+              value={value}
+              onChangeText={onChange}
+            />
+          )}
         />
+
+        <Text style={styles.errorText}>
+          {errors.email?.message?.toString()}
+        </Text>
+
 
         {/* Next button */}
-        <TouchableOpacity
-          style={styles.nextButton}
-          onPress={() => navigation.navigate('RegisterStep2')}
-        >
+        <TouchableOpacity style={styles.nextButton} onPress={goNext}>
           <Text style={styles.nextText}>SIGUIENTE</Text>
         </TouchableOpacity>
       </ScreenContainer>
@@ -157,7 +244,7 @@ const styles = StyleSheet.create({
   },
 
   /** PICKER */
-   pickerWrapper: {
+  pickerWrapper: {
     width: 95,
     height: 40,
     backgroundColor: '#F5F5F5',
@@ -168,7 +255,7 @@ const styles = StyleSheet.create({
 
   picker: {
     height: 50,
-    marginTop: Platform.OS === 'android' ? -4 : 0, 
+    marginTop: Platform.OS === 'android' ? -4 : 0,
     paddingTop: Platform.OS === 'android' ? 6 : 2,
     paddingLeft: 10,
   },
@@ -200,5 +287,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 17,
     fontWeight: '600',
+  },
+  errorText: {
+    color: '#dd4343ff',
   },
 });
