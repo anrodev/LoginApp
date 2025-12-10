@@ -1,11 +1,10 @@
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-
 import { z } from 'zod';
 
 export const RegisterSchema = z
   .object({
-    registerType: z.string().min(1, 'Nombres requeridos'),
+    registerType: z.string().min(1, 'Tipo de registro requerido'),
     names: z.string().min(1, 'Nombres requeridos'),
     surnames: z.string().min(1, 'Apellidos requeridos'),
     docType: z.string().min(1, 'Tipo de documento requerido'),

@@ -37,19 +37,26 @@ export default function RegisterStep2Screen({ navigation }: Props) {
 
   const onSubmit = async (data: RegisterFormType) => {
     const isValid = await trigger();
+
+    if (!accepted)
+      Toast.show({
+        type: 'info',
+        text1: 'Atención',
+        text2: 'Debes aceptar los Términos y Condiciones para continuar.',
+      });
+
     if (!isValid || !accepted) return;
+
     showLoader();
 
     console.log(data);
 
     setTimeout(() => {
       hideLoader();
-      reset();
-
       Toast.show({
         type: 'success',
-        text1: 'Login exitoso 🎉',
-        text2: 'Bienvenido de nuevo',
+        text1: 'Registro exitoso 🎉',
+        text2: 'Se a registrado con exito',
       });
     }, 3000);
   };
@@ -138,7 +145,10 @@ export default function RegisterStep2Screen({ navigation }: Props) {
         </View>
 
         {/* Save button */}
-        <TouchableOpacity style={styles.saveButton} onPress={handleSubmit(onSubmit)}>
+        <TouchableOpacity
+          style={styles.saveButton}
+          onPress={handleSubmit(onSubmit)}
+        >
           <Text style={styles.saveText}>GUARDAR</Text>
         </TouchableOpacity>
       </ScreenContainer>

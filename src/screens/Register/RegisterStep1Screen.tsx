@@ -14,15 +14,42 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { Picker } from '@react-native-picker/picker';
 import { useFormContext } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
+import { pick, types } from '@react-native-documents/picker';
+import Toast from 'react-native-toast-message';
 
 type Props = NativeStackScreenProps<RegisterStackParamList, 'RegisterStep1'>;
 
 export default function RegisterStep1Screen({ navigation }: Props) {
   const {
     control,
+    setValue,
     trigger,
     formState: { errors },
   } = useFormContext();
+
+  const handleUpload = async () => {
+    try {
+      const res = await pick({
+        type: [types.allFiles],
+      });
+
+      const file = res[0];
+
+      setValue('documentFile', file, { shouldValidate: true });
+  
+      Toast.show({
+        type: 'success',
+        text1: 'carga exitosa 🎉',
+        text2: `Archivo adjunto ${file.name}}`,
+      });
+    } catch (err: any) {
+      if (err?.code === 'OPERATION_CANCELED') {
+        console.log('Selection cancelled');
+      } else {
+        console.error(err);
+      }
+    }
+  };
 
   const goNext = async () => {
     const isValid = await trigger(
@@ -136,7 +163,7 @@ export default function RegisterStep1Screen({ navigation }: Props) {
         </Text>
 
         {/* Upload document */}
-        <TouchableOpacity style={styles.uploadButton}>
+        <TouchableOpacity style={styles.uploadButton} onPress={handleUpload}>
           <Icon name="cloud-upload-outline" size={20} color="#555" />
           <Text style={styles.uploadText}>Subir documento</Text>
         </TouchableOpacity>
@@ -176,7 +203,6 @@ export default function RegisterStep1Screen({ navigation }: Props) {
         <Text style={styles.errorText}>
           {errors.email?.message?.toString()}
         </Text>
-
 
         {/* Next button */}
         <TouchableOpacity style={styles.nextButton} onPress={goNext}>
